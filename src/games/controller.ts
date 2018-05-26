@@ -1,6 +1,7 @@
 import { JsonController, Get, Post, Put, Param, Body, HttpCode, NotFoundError } from 'routing-controllers'
 import Game from './entity'
-import { randomColor, listOfColors } from './constants'
+import { randomColor } from './constants'
+import { validate } from 'class-validator';
 
 @JsonController()
 export default class GameController {
@@ -24,7 +25,7 @@ export default class GameController {
         @Body() game: Game
     ) {
         game.color = randomColor()
-        console.log(`Hi Adam! It's games/controller.ts here, This is what you game var looks like after a post request: ` + game)
+        console.log(`Hi Adam! It's games/controller.ts here. This is what your game looks like after a post request: ` + game)
         return game.save()
     }
 
@@ -35,8 +36,15 @@ export default class GameController {
     ) {
         const game = await Game.findOne(id)
         if (!game) throw new NotFoundError(`Hi Adam! I'm in games/controller.ts - sorry, I can't find a game with id ${id}!`)
-
-        return Game.merge(game, update).save()
+        const nugame = Game.merge(game, update)
+        validate(nugame).then(errors => {
+            if (errors.length > 0) {
+                console.log(`Hey Adam, it's games/controller.ts here, I found one or more errors so the validation has failed. Thought you might want to take a look :`, errors);
+            } else {
+                console.log(`Nailed it!`)
+                Game.merge(game, update).save()
+            }
+        })
     }
 
 }
