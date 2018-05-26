@@ -24,7 +24,7 @@ __decorate([
 ], Game.prototype, "name", void 0);
 __decorate([
     typeorm_1.Column('text', { nullable: false }),
-    __metadata("design:type", String)
+    __metadata("design:type", Array)
 ], Game.prototype, "color", void 0);
 __decorate([
     typeorm_1.Column('json', { default: constants_1.defaultBoard }),

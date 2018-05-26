@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
 import { BaseEntity } from 'typeorm/repository/BaseEntity'
 import { defaultBoard } from './constants'
 
+export type gameColors = 'red' | 'blue' | 'green' | 'yellow' | 'magenta'
 
 @Entity()
 export default class Game extends BaseEntity {
@@ -13,7 +14,7 @@ export default class Game extends BaseEntity {
     name: string
 
     @Column('text', {nullable:false})
-    color: string
+    color: gameColors[]
 
     @Column('json', {default: defaultBoard})
     board: JSON

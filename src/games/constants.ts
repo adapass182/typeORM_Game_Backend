@@ -1,11 +1,13 @@
+import { gameColors } from './entity'
+
 export const defaultBoard = [
     ['o', 'o', 'o'],
     ['o', 'o', 'o'],
     ['o', 'o', 'o']
   ]
   
-  export const gameColors = ['red', 'blue', 'green', 'yellow', 'magenta']
-  export const randomColor = () => gameColors[Math.floor(Math.random() * gameColors.length)]
+  export const listOfColors: gameColors = ['red', 'blue', 'green', 'yellow', 'magenta']
+  export const randomColor = () => listOfColors[Math.floor(Math.random() * listOfColors.length)]
   
   export const moves = (board1, board2) => 
     board1

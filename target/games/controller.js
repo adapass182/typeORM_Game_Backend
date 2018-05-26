@@ -23,12 +23,12 @@ let GameController = class GameController {
     getGameById(id) {
         return entity_1.default.findOne(id);
     }
-    createGameWithName(game) {
+    createNewGameWithName(game) {
         game.color = constants_1.randomColor();
         console.log(`Hi Adam! It's games/controller.ts here, This is what you game var looks like after a post request: ` + game);
         return game.save();
     }
-    async editGame(id, update) {
+    async editExistingGame(id, update) {
         const game = await entity_1.default.findOne(id);
         if (!game)
             throw new routing_controllers_1.NotFoundError(`Hi Adam! I'm in games/controller.ts - sorry, I can't find a game with id ${id}!`);
@@ -55,7 +55,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [entity_1.default]),
     __metadata("design:returntype", void 0)
-], GameController.prototype, "createGameWithName", null);
+], GameController.prototype, "createNewGameWithName", null);
 __decorate([
     routing_controllers_1.Put(`/games/:id`),
     __param(0, routing_controllers_1.Param(`id`)),
@@ -63,7 +63,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, Object]),
     __metadata("design:returntype", Promise)
-], GameController.prototype, "editGame", null);
+], GameController.prototype, "editExistingGame", null);
 GameController = __decorate([
     routing_controllers_1.JsonController()
 ], GameController);
