@@ -1,6 +1,6 @@
-import { JsonController, Get, Post, Put, Param, Body, HttpCode, NotFoundError } from 'routing-controllers'
+import { JsonController, Get, Post, Put, Param, Body, HttpCode, NotFoundError, BadRequestError } from 'routing-controllers'
 import Game from './entity'
-import { randomColor } from './constants'
+import { randomColor, moves } from './constants'
 import { validate } from 'class-validator';
 
 @JsonController()
@@ -36,6 +36,9 @@ export default class GameController {
     ) {
         const game = await Game.findOne(id)
         if (!game) throw new NotFoundError(`Hi Adam! I'm in games/controller.ts - sorry, I can't find a game with id ${id}!`)
+        if (update.board && moves(game.board, update.board) > 1) {
+            throw new BadRequestError(`Ummmm... are you trying to cheat? Only one move at a time please!!!`)
+        }
         const nugame = Game.merge(game, update)
         validate(nugame).then(errors => {
             if (errors.length > 0) {
