@@ -32,6 +32,8 @@ let GameController = class GameController {
         const gameToUpdate = await entity_1.default.findOne(id);
         if (!gameToUpdate)
             throw new routing_controllers_1.NotFoundError(`Hi Adam! I'm in games/controller.ts - sorry, I can't find a game with id ${id}!`);
+        if (update.color && !constants_1.listOfColors.includes(update.color))
+            throw new routing_controllers_1.BadRequestError(`Sorry you can't use ${update.color}, try using one of these instead: ${constants_1.listOfColors.join(", ")}`);
         if (update.board && constants_1.moves(gameToUpdate.board, update.board) > 1) {
             throw new routing_controllers_1.BadRequestError(`Ummmm... are you trying to cheat? Only one move at a time please!`);
         }

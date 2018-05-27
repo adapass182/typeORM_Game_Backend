@@ -1,7 +1,8 @@
 import { JsonController, Get, Post, Put, Param, Body, HttpCode, BadRequestError, NotFoundError } from 'routing-controllers'
 import Game from './entity'
-import { randomColor, moves } from './constants'
+import { randomColor, moves, listOfColors } from './constants'
 import { validate } from 'class-validator';
+import { listenerCount } from 'cluster';
 
 @JsonController()
 export default class GameController {
@@ -35,6 +36,7 @@ export default class GameController {
     ) {
         const gameToUpdate = await Game.findOne(id)
         if (!gameToUpdate) throw new NotFoundError(`Hi Adam! I'm in games/controller.ts - sorry, I can't find a game with id ${id}!`)
+        if (update.color && !listOfColors.includes(update.color)) throw new BadRequestError(`Sorry you can't use ${update.color}, try using one of these instead: ${listOfColors.join(", ")}`)
         if (update.board && moves(gameToUpdate.board, update.board) > 1) {
             throw new BadRequestError(`Ummmm... are you trying to cheat? Only one move at a time please!`)
         }
