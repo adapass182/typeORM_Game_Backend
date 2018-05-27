@@ -35,7 +35,7 @@ let GameController = class GameController {
         if (update.color && !constants_1.listOfColors.includes(update.color))
             throw new routing_controllers_1.BadRequestError(`Sorry you can't use ${update.color}, try using one of these instead: ${constants_1.listOfColors.join(", ")}`);
         if (update.board && constants_1.moves(gameToUpdate.board, update.board) > 1) {
-            throw new routing_controllers_1.BadRequestError(`Ummmm... are you trying to cheat? Only one move at a time please!`);
+            throw new routing_controllers_1.BadRequestError(`Ummmm... are you trying to cheat? Only one move at a time please! ` + gameToUpdate.board + update.board);
         }
         const updatedGame = entity_1.default.merge(gameToUpdate, update);
         class_validator_1.validate(updatedGame).then(errors => {

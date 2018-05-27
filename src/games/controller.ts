@@ -37,7 +37,7 @@ export default class GameController {
         if (!gameToUpdate) throw new NotFoundError(`Hi Adam! I'm in games/controller.ts - sorry, I can't find a game with id ${id}!`)
         if (update.color && !listOfColors.includes(update.color)) throw new BadRequestError(`Sorry you can't use ${update.color}, try using one of these instead: ${listOfColors.join(", ")}`)
         if (update.board && moves(gameToUpdate.board, update.board) > 1) {
-            throw new BadRequestError(`Ummmm... are you trying to cheat? Only one move at a time please!`)
+            throw new BadRequestError(`Ummmm... are you trying to cheat? Only one move at a time please! ` + gameToUpdate.board + update.board)
         }
         const updatedGame = Game.merge(gameToUpdate, update)
         validate(updatedGame).then(errors => {
