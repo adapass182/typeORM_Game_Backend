@@ -13,6 +13,6 @@ const app = createKoaServer({
 
 setupDb()
     .then(_ =>
-        app.listen(port, () => console.log(`Hi Adam! I'm listening on port ${port} from src/index.ts! Also, Kat smells lololol!!!`))
+        app.listen(port, () => console.log(`Hi Adam! I'm listening on port ${port} from index.ts!`))
     )
     .catch(err => console.error(`Awww sheeeit! index.ts here, I caught an error on your setupDb(): ` + err))

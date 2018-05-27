@@ -24,25 +24,27 @@ let GameController = class GameController {
     getGameById(id) {
         return entity_1.default.findOne(id);
     }
-    createNewGameWithName(game) {
-        game.color = constants_1.randomColor();
-        console.log(`Hi Adam! It's games/controller.ts here. This is what your game looks like after a post request: ` + game);
-        return game.save();
+    createNewGameWithName(createGame) {
+        createGame.color = constants_1.randomColor();
+        return createGame.save();
     }
     async editExistingGame(id, update) {
-        const game = await entity_1.default.findOne(id);
-        if (!game)
+        const gameToUpdate = await entity_1.default.findOne(id);
+        if (!gameToUpdate)
             throw new routing_controllers_1.NotFoundError(`Hi Adam! I'm in games/controller.ts - sorry, I can't find a game with id ${id}!`);
-        const nugame = entity_1.default.merge(game, update);
-        class_validator_1.validate(nugame).then(errors => {
+        if (update.board && constants_1.moves(gameToUpdate.board, update.board) > 1) {
+            throw new routing_controllers_1.BadRequestError(`Ummmm... are you trying to cheat? Only one move at a time please!`);
+        }
+        const updatedGame = entity_1.default.merge(gameToUpdate, update);
+        class_validator_1.validate(updatedGame).then(errors => {
             if (errors.length > 0) {
-                console.log(`Hey Adam, it's games/controller.ts here, I found one or more errors so the validation has failed. Thought you might want to take a look :`, errors);
+                console.log(`Hey Adam, it's games/controller.ts here, I found one or more errors in your PUT endpoint so the validation has failed. Thought you might want to take a look :`, errors);
             }
             else {
                 console.log(`Nailed it!`);
-                entity_1.default.merge(game, update).save();
             }
         });
+        return updatedGame.save();
     }
 };
 __decorate([
@@ -52,7 +54,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], GameController.prototype, "getAllGames", null);
 __decorate([
-    routing_controllers_1.Get(`games/:id`),
+    routing_controllers_1.Get(`/games/:id`),
     __param(0, routing_controllers_1.Param(`id`)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),

@@ -1,4 +1,4 @@
-import { JsonController, Get, Post, Put, Param, Body, HttpCode, NotFoundError, BadRequestError } from 'routing-controllers'
+import { JsonController, Get, Post, Put, Param, Body, HttpCode, BadRequestError, NotFoundError } from 'routing-controllers'
 import Game from './entity'
 import { randomColor, moves } from './constants'
 import { validate } from 'class-validator';
@@ -12,7 +12,7 @@ export default class GameController {
         return { games }
     }
 
-    @Get(`games/:id`)
+    @Get(`/games/:id`)
     getGameById(
         @Param(`id`) id: number
     ) {
@@ -22,11 +22,10 @@ export default class GameController {
     @Post(`/games`)
     @HttpCode(201)
     createNewGameWithName(
-        @Body() game: Game
+        @Body() createGame: Game
     ) {
-        game.color = randomColor()
-        console.log(`Hi Adam! It's games/controller.ts here. This is what your game looks like after a post request: ` + game)
-        return game.save()
+        createGame.color = randomColor()
+        return createGame.save()
     }
 
     @Put(`/games/:id`)
@@ -34,20 +33,20 @@ export default class GameController {
         @Param(`id`) id: number,
         @Body() update: Partial<Game>
     ) {
-        const game = await Game.findOne(id)
-        if (!game) throw new NotFoundError(`Hi Adam! I'm in games/controller.ts - sorry, I can't find a game with id ${id}!`)
-        if (update.board && moves(game.board, update.board) > 1) {
-            throw new BadRequestError(`Ummmm... are you trying to cheat? Only one move at a time please!!!`)
+        const gameToUpdate = await Game.findOne(id)
+        if (!gameToUpdate) throw new NotFoundError(`Hi Adam! I'm in games/controller.ts - sorry, I can't find a game with id ${id}!`)
+        if (update.board && moves(gameToUpdate.board, update.board) > 1) {
+            throw new BadRequestError(`Ummmm... are you trying to cheat? Only one move at a time please!`)
         }
-        const nugame = Game.merge(game, update)
-        validate(nugame).then(errors => {
+        const updatedGame = Game.merge(gameToUpdate, update)
+        validate(updatedGame).then(errors => {
             if (errors.length > 0) {
-                console.log(`Hey Adam, it's games/controller.ts here, I found one or more errors so the validation has failed. Thought you might want to take a look :`, errors);
+                console.log(`Hey Adam, it's games/controller.ts here, I found one or more errors in your PUT endpoint so the validation has failed. Thought you might want to take a look :`, errors);
             } else {
                 console.log(`Nailed it!`)
-                Game.merge(game, update).save()
             }
         })
+        return updatedGame.save()
     }
 
 }

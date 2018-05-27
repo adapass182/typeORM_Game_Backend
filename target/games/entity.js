@@ -20,19 +20,19 @@ __decorate([
     __metadata("design:type", Number)
 ], Game.prototype, "id", void 0);
 __decorate([
+    class_validator_1.IsString(),
     typeorm_1.Column('text', { nullable: false }),
     __metadata("design:type", String)
 ], Game.prototype, "name", void 0);
 __decorate([
-    class_validator_1.IsIn(constants_1.listOfColors, {
-        message: "Woah there! We're a bit conservative with our choice of colors here at `AnL` games - please try to limit yourself to either: red, blue, green, yellow or magenta. Thanks!"
-    }),
-    typeorm_1.Column('text', { nullable: false }),
+    class_validator_1.IsOptional(),
+    class_validator_1.IsIn(constants_1.listOfColors),
+    typeorm_1.Column('text'),
     __metadata("design:type", String)
 ], Game.prototype, "color", void 0);
 __decorate([
     typeorm_1.Column('json', { default: constants_1.defaultBoard }),
-    __metadata("design:type", Object)
+    __metadata("design:type", Array)
 ], Game.prototype, "board", void 0);
 Game = __decorate([
     typeorm_1.Entity()

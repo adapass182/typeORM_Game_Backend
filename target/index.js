@@ -11,6 +11,6 @@ const app = routing_controllers_1.createKoaServer({
     ]
 });
 db_1.default()
-    .then(_ => app.listen(port, () => console.log(`Hi Adam! I'm listening on port ${port} from src/index.ts! Also, Kat smells lololol!!!`)))
+    .then(_ => app.listen(port, () => console.log(`Hi Adam! I'm listening on port ${port} from index.ts!`)))
     .catch(err => console.error(`Awww sheeeit! index.ts here, I caught an error on your setupDb(): ` + err));
 //# sourceMappingURL=index.js.map
