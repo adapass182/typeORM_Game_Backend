@@ -1,8 +1,7 @@
 import { JsonController, Get, Post, Put, Param, Body, HttpCode, BadRequestError, NotFoundError } from 'routing-controllers'
 import Game from './entity'
 import { randomColor, moves, listOfColors } from './constants'
-import { validate } from 'class-validator';
-import { listenerCount } from 'cluster';
+import { validate } from 'class-validator'
 
 @JsonController()
 export default class GameController {
